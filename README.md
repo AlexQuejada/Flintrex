@@ -28,21 +28,37 @@ JetBase permite unificarlos, transformarlos y visualizarlos sin necesidad de her
 ## 📁 Estructura del proyecto
 
 JetBase/
+
 ├── backend/
+
 │ ├── app/
+
 │ │ ├── api/ # Endpoints (REST)
+
 │ │ ├── core/ # Configuración, seguridad
+
 │ │ ├── models/ # Modelos de datos
+
 │ │ ├── schemas/ # Validación (Pydantic)
+
 │ │ ├── services/ # Lógica de negocio
+
 │ │ └── utils/ # Utilidades
+
 │ ├── tests/ # Pruebas unitarias
+
 │ ├── requirements.txt
+
 │ └── main.py
+
 ├── frontend/ # React app (próximamente)
+
 ├── docker-compose.yml
+
 ├── .env
+
 ├── .gitignore
+
 └── README.md
 
 ## 🚀 Estado del proyecto
