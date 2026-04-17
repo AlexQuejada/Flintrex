@@ -12,77 +12,79 @@ const FileUpload: React.FC = () => {
     }
   };
 
-const handleUpload = async () => {
-  if (!file) return;
+  const handleUpload = async () => {
+    if (!file) return;
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('file', file);
 
-  setLoading(true);
-  const formData = new FormData();
-  formData.append('file', file);
+    let endpoint = '';
+    if (file.name.endsWith('.csv')) {
+      endpoint = 'http://localhost:8000/api/v1/data/upload/csv';
+    } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+      endpoint = 'http://localhost:8000/api/v1/data/upload/excel';
+    } else {
+      alert('Formato no soportado. Use CSV o Excel');
+      setLoading(false);
+      return;
+    }
 
-  // Elegir el endpoint según el tipo de archivo
-  let endpoint = '';
-  if (file.name.endsWith('.csv')) {
-    endpoint = 'http://localhost:8000/api/v1/data/upload/csv';
-  } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-    endpoint = 'http://localhost:8000/api/v1/data/upload/excel';
-  } else {
-    alert('Formato no soportado. Use CSV o Excel');
-    setLoading(false);
-    return;
-  }
-
-  try {
-    const res = await axios.post(endpoint, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    setPreview(res.data);
-    console.log('Archivo subido:', res.data);
-  } catch (err) {
-    console.error('Error al subir:', err);
-    alert('Error al subir el archivo');
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const res = await axios.post(endpoint, formData);
+      setPreview(res.data);
+    } catch (err) {
+      console.error(err);
+      alert('Error al subir el archivo');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h2>Subir Archivo</h2>
-      <input type="file" accept=".csv,.xlsx,.xls" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={!file || loading}>
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <h2 className="text-xl font-semibold mb-4">📂 Subir archivo</h2>
+      <div className="mb-4">
+        <input
+          type="file"
+          accept=".csv,.xlsx,.xls"
+          onChange={handleFileChange}
+          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        />
+      </div>
+      <button
+        onClick={handleUpload}
+        disabled={!file || loading}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+      >
         {loading ? 'Subiendo...' : 'Subir y procesar'}
       </button>
 
       {preview && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Vista previa</h3>
-          <p><strong>Archivo:</strong> {preview.filename}</p>
-          <p><strong>Filas:</strong> {preview.rows}</p>
-          <p><strong>Columnas:</strong> {preview.columns.join(', ')}</p>
-          
-          <h4>Primeras filas:</h4>
-          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-            <thead>
-              <tr>
-                {preview.columns.map((col: string) => (
-                  <th key={col} style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>
-                    {col}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {preview.preview.slice(0, 5).map((row: any, idx: number) => (
-                <tr key={idx}>
-                  {preview.columns.map((col: string) => (
-                    <td key={col} style={{ border: '1px solid #ddd', padding: '8px' }}>
-                      {row[col]}
-                    </td>
+        <div className="mt-6">
+          <h3 className="font-semibold text-lg mb-2">Vista previa</h3>
+          <p className="text-sm text-gray-600 mb-2">
+            <strong>Archivo:</strong> {preview.filename} | <strong>Filas:</strong> {preview.rows}
+          </p>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border text-sm">
+              <thead className="bg-gray-100">
+                <tr>
+                  {preview.columns?.map((col: string) => (
+                    <th key={col} className="border px-3 py-2 text-left">{col}</th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {preview.preview?.slice(0, 5).map((row: any, idx: number) => (
+                  <tr key={idx} className="hover:bg-gray-50">
+                    {preview.columns.map((col: string) => (
+                      <td key={col} className="border px-3 py-2">{row[col]}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
