@@ -7,15 +7,15 @@ load_dotenv()
 
 DATABASE_URL = "postgresql://user:password@localhost:5432/jetbase"
 
-# 🔥 función que fuerza encoding en psycopg2
+# funcion que fuerza encoding en psycopg2
 def get_connection():
     conn = psycopg2.connect(DATABASE_URL)
-    conn.set_client_encoding('UTF8')  # 💥 CLAVE
+    conn.set_client_encoding('UTF8')  # CLAVE
     return conn
 
 engine = create_engine(
     DATABASE_URL,
-    creator=get_connection  # 👈 usamos nuestra conexión custom
+    creator=get_connection  # usamos nuestra conexion custom
 )
 
 SessionLocal = sessionmaker(

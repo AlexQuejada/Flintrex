@@ -22,7 +22,7 @@ app.include_router(api_router, prefix="/api")
 
 @app.get("/")
 def root():
-    return {"message": "🚀 JetBase API is running"}
+    return {"message": "JetBase API is running"}
 
 @app.get("/health")
 def health():
