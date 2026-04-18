@@ -245,8 +245,11 @@ async def transform_data(
 async def _read_file(contents: bytes, filename: str) -> pd.DataFrame:
     """Lee CSV o Excel de forma robusta"""
     df = None
+    
+    # convertir a minúsculas para case insensitive
+    filename_lower = filename.lower()
 
-    if filename.endswith('.csv'):
+    if filename_lower.endswith('.csv'):
         encodings = ['utf-8-sig', 'utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
         separators = [',', ';', '\t', '|']
         for enc in encodings:
@@ -269,7 +272,7 @@ async def _read_file(contents: bytes, filename: str) -> pd.DataFrame:
             if df is not None and len(df.columns) > 0:
                 break
 
-    elif filename.endswith(('.xlsx', '.xls')):
+    elif filename_lower.endswith(('.xlsx', '.xls')):
         try:
             df = pd.read_excel(io.BytesIO(contents), engine='openpyxl')
         except Exception:
