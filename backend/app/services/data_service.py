@@ -2,7 +2,8 @@
 Servicio principal de procesamiento de datos.
 Contiene toda la lógica de negocio de los endpoints de data.
 """
-from typing import Optional, List
+import io
+from typing import Optional, List, Tuple
 from fastapi import UploadFile, HTTPException
 import pandas as pd
 
@@ -260,3 +261,109 @@ class DataService:
             },
             "preview": combined_df.head(100).fillna("").astype(str).to_dict(orient='records')
         }
+
+    @staticmethod
+    async def merge_download(
+        files: List[UploadFile],
+        operation: str,
+        fill_value: Optional[str],
+        key_columns: Optional[str],
+        case_sensitive: bool,
+        normalize_whitespace: bool,
+        normalize_accents: bool,
+        keep: str,
+        merge_mode: str,
+        join_type: str,
+        download_format: str = "csv"
+    ) -> Tuple[bytes, str, str]:
+        """
+        Combina múltiples archivos y devuelve el resultado como archivo descargable.
+
+        Returns:
+            Tuple de (contenido_bytes, filename, media_type)
+        """
+        if len(files) < 2:
+            raise HTTPException(400, "Se necesitan al menos 2 archivos")
+
+        # Leer todos los archivos
+        dataframes = []
+        all_columns = set()
+
+        for file in files:
+            contents = await file.read()
+            filename = file.filename.lower()
+
+            df = await read_file(contents, filename)
+            if df is None:
+                raise HTTPException(400, f"No se pudo leer: {file.filename}")
+
+            # Normalizar columnas y valores
+            df = MergeService.normalize_columns(df)
+            df = normalize_dataframe(df, case_sensitive, normalize_whitespace, normalize_accents)
+
+            all_columns.update(df.columns)
+            dataframes.append(df)
+
+        # Análisis de esquema
+        columns_by_file = [set(df.columns) for df in dataframes]
+        common_columns = set.intersection(*columns_by_file) if columns_by_file else set()
+
+        # Parsear key_columns
+        key_cols_list = None
+        if key_columns:
+            key_cols_normalized = []
+            for col in key_columns.split(','):
+                col_clean = col.strip().lower().replace(' ', '_').replace('-', '_')
+                matched = False
+                for standard_name, synonyms in MergeService.COLUMN_SYNONYMS.items():
+                    if col_clean in synonyms:
+                        key_cols_normalized.append(standard_name)
+                        matched = True
+                        break
+                if not matched:
+                    key_cols_normalized.append(col.strip())
+            key_cols_list = key_cols_normalized
+
+        # Detectar y ejecutar merge
+        detected_mode = MergeService.detect_merge_mode(dataframes, key_cols_list, common_columns)
+        final_mode = merge_mode if merge_mode != "auto" else detected_mode
+
+        if final_mode == "join":
+            if not key_cols_list:
+                key_cols_list = MergeService._infer_key_columns(common_columns)
+                if not key_cols_list:
+                    raise HTTPException(400, "No se pudieron inferir columnas clave")
+            combined_df = MergeService.perform_join(dataframes, key_cols_list, join_type)
+        else:
+            combined_df = MergeService.perform_union(dataframes)
+
+        # Trazabilidad
+        row_counts = [len(df) for df in dataframes]
+        filenames = [f.filename for f in files]
+        combined_df = MergeService.add_source_column(combined_df, filenames, row_counts, final_mode)
+
+        # Aplicar operación de limpieza
+        key_columns_for_operation = ','.join(key_cols_list) if key_cols_list else key_columns
+        combined_df, _ = TransformService.apply_operation(
+            combined_df, operation, fill_value, key_columns_for_operation, keep
+        )
+
+        # Generar archivo en memoria
+        timestamp = pd.Timestamp.now().strftime("%Y%m%d_%H%M%S")
+
+        if download_format.lower() == "excel":
+            output = io.BytesIO()
+            with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                combined_df.to_excel(writer, index=False, sheet_name='Merged')
+            output.seek(0)
+            content = output.getvalue()
+            download_filename = f"merged_{timestamp}.xlsx"
+            media_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        else:
+            output = io.StringIO()
+            combined_df.to_csv(output, index=False, encoding='utf-8-sig')
+            content = output.getvalue().encode('utf-8-sig')
+            download_filename = f"merged_{timestamp}.csv"
+            media_type = "text/csv; charset=utf-8"
+
+        return content, download_filename, media_type

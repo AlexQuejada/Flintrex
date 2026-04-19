@@ -12,6 +12,7 @@ const FileMerge: React.FC = () => {
     const [normalizeAccents, setNormalizeAccents] = useState(true);
     const [normalizeWhitespace, setNormalizeWhitespace] = useState(true);
     const [keep, setKeep] = useState('first');
+    const [downloadFormat, setDownloadFormat] = useState('csv');
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -53,6 +54,53 @@ const FileMerge: React.FC = () => {
         } catch (err) {
             console.error('Error al combinar:', err);
             alert('Error al combinar los archivos');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDownload = async () => {
+        if (!files || files.length < 2) {
+            alert('Selecciona al menos 2 archivos');
+            return;
+        }
+
+        setLoading(true);
+        const formData = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+
+        formData.append('operation', operation);
+        if (fillValue) formData.append('fill_value', fillValue);
+        if (keyColumns) formData.append('key_columns', keyColumns);
+        formData.append('case_sensitive', String(caseSensitive));
+        formData.append('normalize_accents', String(normalizeAccents));
+        formData.append('normalize_whitespace', String(normalizeWhitespace));
+        formData.append('keep', keep);
+        formData.append('merge_mode', 'union');
+        formData.append('download_format', downloadFormat);
+
+        try {
+            const res = await axios.post('http://localhost:8000/api/v1/data/merge/download', formData, {
+                responseType: 'blob'
+            });
+
+            // Crear link de descarga
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            const contentDisposition = res.headers['content-disposition'];
+            const filename = contentDisposition?.split('filename=')[1]?.replace(/"/g, '') || `merged.${downloadFormat === 'excel' ? 'xlsx' : 'csv'}`;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error('Error al descargar:', err);
+            alert('Error al descargar el archivo');
         } finally {
             setLoading(false);
         }
@@ -184,7 +232,26 @@ const FileMerge: React.FC = () => {
             {/* Resultado */}
             {preview && (
                 <div className="mt-6">
-                    <h3 className="font-semibold text-lg mb-2">Resultado combinado</h3>
+                    <div className="flex flex-wrap items-center justify-between mb-4">
+                        <h3 className="font-semibold text-lg">Resultado combinado</h3>
+                        <div className="flex gap-2 items-center">
+                            <select
+                                value={downloadFormat}
+                                onChange={(e) => setDownloadFormat(e.target.value)}
+                                className="text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            >
+                                <option value="csv">CSV</option>
+                                <option value="excel">Excel</option>
+                            </select>
+                            <button
+                                onClick={handleDownload}
+                                disabled={loading}
+                                className="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 transition disabled:opacity-50"
+                            >
+                                {loading ? 'Descargando...' : 'Descargar archivo'}
+                            </button>
+                        </div>
+                    </div>
                     <p className="text-sm text-gray-600 mb-2">
                         <strong>Archivos procesados:</strong> {preview.files_processed} |
                         <strong> Filas originales:</strong> {preview.original_rows} |

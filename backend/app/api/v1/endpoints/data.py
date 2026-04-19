@@ -1,8 +1,10 @@
 """
 Endpoints de procesamiento de datos.
-Controller puramente de enrutamiento - toda la lógica está en DataService.
+Controller puramente de enrutamiento - toda la logica esta en DataService.
 """
+import io
 from fastapi import APIRouter, UploadFile, File, Form
+from fastapi.responses import StreamingResponse
 from typing import Optional, List
 
 from app.services.data_service import DataService
@@ -36,7 +38,7 @@ async def detect_duplicates(
     normalize_whitespace: bool = True,
     normalize_accents: bool = True
 ):
-    """Detecta duplicados SIN eliminarlos. Devuelve grupos para revisión."""
+    """Detecta duplicados SIN eliminarlos. Devuelve grupos para revision."""
     return await DataService.detect_duplicates(
         file, key_columns, case_sensitive, normalize_whitespace, normalize_accents
     )
@@ -74,11 +76,43 @@ async def merge_files(
     join_type: str = Form("inner")
 ):
     """
-    Combina múltiples archivos CSV o Excel.
+    Combina multiples archivos CSV o Excel.
     Modos: auto (detecta), union (vertical), join (horizontal por key_columns).
     """
     return await DataService.merge(
         files, operation, fill_value, key_columns,
         case_sensitive, normalize_whitespace, normalize_accents, keep,
         merge_mode, join_type
+    )
+
+
+@router.post("/merge/download")
+async def merge_download(
+    files: List[UploadFile] = File(...),
+    operation: str = Form("clean"),
+    fill_value: Optional[str] = Form(None),
+    key_columns: Optional[str] = Form(None),
+    case_sensitive: bool = Form(False),
+    normalize_whitespace: bool = Form(True),
+    normalize_accents: bool = Form(True),
+    keep: str = Form("first"),
+    merge_mode: str = Form("auto"),
+    join_type: str = Form("inner"),
+    download_format: str = Form("csv")
+):
+    """
+    Combina multiples archivos y devuelve el resultado como archivo descargable.
+
+    - download_format: "csv" o "excel"
+    """
+    content, filename, media_type = await DataService.merge_download(
+        files, operation, fill_value, key_columns,
+        case_sensitive, normalize_whitespace, normalize_accents, keep,
+        merge_mode, join_type, download_format
+    )
+
+    return StreamingResponse(
+        io.BytesIO(content),
+        media_type=media_type,
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
     )

@@ -9,30 +9,49 @@ from typing import Optional
 async def read_csv_robust(contents: bytes) -> Optional[pd.DataFrame]:
     """
     Lee un CSV probando múltiples codificaciones y separadores.
-    Retorna None si no puede leer el archivo.
+    Detecta automaticamente el separador basado en el contenido.
     """
     encodings = ['utf-8-sig', 'utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
     separators = [',', ';', '\t', '|']
 
-    for enc in encodings:
-        for sep in separators:
-            try:
-                content = contents
-                # Detectar y remover BOM
-                if content.startswith(b'\xef\xbb\xbf'):
-                    content = content[3:]
+    # Detectar y remover BOM
+    content = contents
+    if content.startswith(b'\xef\xbb\xbf'):
+        content = content[3:]
 
+    for enc in encodings:
+        try:
+            # Intento 1: Dejar que pandas detecte automaticamente el separador
+            try:
                 df = pd.read_csv(
                     io.BytesIO(content),
                     encoding=enc,
-                    sep=sep,
+                    sep=None,  # pandas detecta automaticamente
                     engine='python',
                     on_bad_lines='skip'
                 )
-                if df is not None and len(df.columns) > 0:
+                if df is not None and len(df.columns) > 1:
                     return df
             except Exception:
-                continue
+                pass
+
+            # Intento 2: Probar separadores especificos
+            for sep in separators:
+                try:
+                    df = pd.read_csv(
+                        io.BytesIO(content),
+                        encoding=enc,
+                        sep=sep,
+                        engine='python',
+                        on_bad_lines='skip'
+                    )
+                    if df is not None and len(df.columns) > 1:
+                        return df
+                except Exception:
+                    continue
+
+        except Exception:
+            continue
 
     return None
 
@@ -55,7 +74,7 @@ async def read_excel_robust(contents: bytes) -> Optional[pd.DataFrame]:
 
 async def read_file(contents: bytes, filename: str) -> Optional[pd.DataFrame]:
     """
-    Lee CSV o Excel de forma robusta según la extensión del archivo.
+    Lee CSV o Excel de forma robusta segun la extension del archivo.
     """
     filename_lower = filename.lower()
 
