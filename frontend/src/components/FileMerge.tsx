@@ -44,6 +44,7 @@ const FileMerge: React.FC = () => {
         formData.append('normalize_accents', String(normalizeAccents));
         formData.append('normalize_whitespace', String(normalizeWhitespace));
         formData.append('keep', keep);
+        formData.append('merge_mode', 'union');
 
         try {
             const res = await axios.post('http://localhost:8000/api/v1/data/merge', formData);
@@ -200,7 +201,7 @@ const FileMerge: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {preview.preview?.slice(0, 10).map((row: any, idx: number) => (
+                                {preview.preview?.map((row: any, idx: number) => (
                                     <tr key={idx} className="hover:bg-gray-50">
                                         {preview.columns.map((col: string) => (
                                             <td key={col} className="border px-3 py-2">{row[col]}</td>
@@ -209,9 +210,9 @@ const FileMerge: React.FC = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {preview.transformed_rows > 10 && (
+                        {preview.transformed_rows > preview.preview?.length && (
                             <p className="text-sm text-gray-500 mt-2">
-                                Mostrando 10 de {preview.transformed_rows} filas
+                                Mostrando {preview.preview?.length} de {preview.transformed_rows} filas
                             </p>
                         )}
                     </div>
