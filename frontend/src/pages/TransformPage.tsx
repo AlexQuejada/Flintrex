@@ -1,5 +1,5 @@
 import React from 'react';
-import FileUpload from '../components/FiledUpload';
+import FileUpload from '../components/FileUpload';
 import FileMerge from '../components/FileMerge';
 
 const TransformPage: React.FC = () => {
