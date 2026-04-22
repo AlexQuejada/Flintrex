@@ -120,8 +120,7 @@ async def merge_download(
     )
 
 
-<<<<<<< HEAD
-=======
+
 # ==================== HARMONIZE ENDPOINTS ====================
 
 @router.post("/harmonize", response_model=HarmonizeResponse)
@@ -167,7 +166,7 @@ async def harmonize_download(
     )
 
 
->>>>>>> feature/backend
+
 # ==================== DASHBOARD ENDPOINTS ====================
 
 @router.post("/dashboard/analyze-columns")
