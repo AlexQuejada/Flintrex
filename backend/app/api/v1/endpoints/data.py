@@ -13,7 +13,8 @@ from app.schemas.data_schemas import (
     UploadResponse,
     TransformResponse,
     DetectDuplicatesResponse,
-    MergeResponse
+    MergeResponse,
+    HarmonizeResponse
 )
 
 router = APIRouter()
@@ -119,6 +120,54 @@ async def merge_download(
     )
 
 
+<<<<<<< HEAD
+=======
+# ==================== HARMONIZE ENDPOINTS ====================
+
+@router.post("/harmonize", response_model=HarmonizeResponse)
+async def harmonize_files(
+    files: List[UploadFile] = File(...),
+    case_sensitive: bool = Form(False),
+    normalize_whitespace: bool = Form(True),
+    normalize_accents: bool = Form(True)
+):
+    """
+    Armoniza múltiples archivos:
+    1. Detecta automáticamente el archivo de referencia (mejor estructura)
+    2. Detecta contenido en columnas incorrectas (ej: email en columna nombre)
+    3. Reordena y alinea los esquemas al archivo referencia
+    4. Combina todos en un solo dataset
+
+    Retorna metadata del proceso incluyendo scores de salud por archivo.
+    """
+    return await DataService.harmonize(
+        files, case_sensitive, normalize_whitespace, normalize_accents
+    )
+
+
+@router.post("/harmonize/download")
+async def harmonize_download(
+    files: List[UploadFile] = File(...),
+    case_sensitive: bool = Form(False),
+    normalize_whitespace: bool = Form(True),
+    normalize_accents: bool = Form(True),
+    download_format: str = Form("csv")
+):
+    """
+    Armoniza múltiples archivos y devuelve el resultado como archivo descargable.
+    """
+    content, filename, media_type = await DataService.harmonize_download(
+        files, case_sensitive, normalize_whitespace, normalize_accents, download_format
+    )
+
+    return StreamingResponse(
+        io.BytesIO(content),
+        media_type=media_type,
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+
+>>>>>>> feature/backend
 # ==================== DASHBOARD ENDPOINTS ====================
 
 @router.post("/dashboard/analyze-columns")
