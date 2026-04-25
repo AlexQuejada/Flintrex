@@ -1,0 +1,183 @@
+{
+  "common": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in",
+    "reset": "Reset"
+  },
+  "nav": {
+    "brand": "Flintrex(BETA)",
+    "subtitle": "Data transformation"
+  },
+  "sidebar": {
+    "transform": "Transform",
+    "dashboard": "Dashboard",
+    "report": "Intelligence Report"
+  },
+  "footer": {
+    "copyright": "© 2026 Flintrex(BETA)",
+    "developedBy": "Developed by",
+    "github": "GitHub",
+    "version": "v1.0.0"
+  },
+  "pages": {
+    "transform": {
+      "title": "Transform Data",
+      "description": "Upload, combine and clean your CSV/Excel files to prepare them for the dashboard."
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Visualize metrics and charts from your processed data."
+    },
+    "report": {
+      "title": "Intelligence Report",
+      "description": "Generate a professional report with your data and dashboard.",
+      "noData": "No data available. Please upload and process files in the \"Transform\" section first.",
+      "reportTitle": "Report Title",
+      "titlePlaceholder": "e.g: Q1 2024 Customer Report",
+      "exportPdf": "Export to PDF",
+      "generatingPdf": "Generating PDF...",
+      "dataSummary": "Data Summary",
+      "file": "File",
+      "rows": "Rows",
+      "columns": "Columns",
+      "source": "Source",
+      "data": "Data",
+      "showingRows": "Showing 100 of {n} rows",
+      "dashboardSection": "Dashboard",
+      "generated": "Generated"
+    }
+  },
+  "fileUpload": {
+    "title": "Upload file",
+    "uploading": "Uploading...",
+    "uploadAndProcess": "Upload and process",
+    "preview": "Preview (editable)",
+    "saveChanges": "Save changes",
+    "clearData": "Clear data",
+    "fileInfo": "File: {name} | Rows: {n}",
+    "unsavedChanges": "(Unsaved changes)",
+    "tableHint": "Click any cell to edit it | Right-click on row/column for options"
+  },
+  "fileMerge": {
+    "title": "Combine multiple files",
+    "selectFiles": "Select files (CSV or Excel)",
+    "filesSelected": "{n} file(s) selected",
+    "combinedResult": "Combined result (editable)",
+    "mergeFiles": "Combine files",
+    "merging": "Combining...",
+    "downloadFile": "Download file",
+    "downloading": "Downloading...",
+    "clearData": "Clear data",
+    "processedFiles": "Processed files:",
+    "originalRows": "Original rows:",
+    "finalRows": "Final rows:"
+  },
+  "operationControls": {
+    "operation": "Operation",
+    "cleanOnly": "Clean only (normalize)",
+    "removeNulls": "Remove nulls",
+    "fillNulls": "Fill nulls",
+    "removeDuplicates": "Remove duplicates",
+    "fillValue": "Value to fill",
+    "fillValuePlaceholder": "e.g: UNKNOWN",
+    "keyColumns": "Key columns (comma separated)",
+    "keyColumnsPlaceholder": "e.g: email,client_id",
+    "keep": "Keep",
+    "firstOccurrence": "First occurrence",
+    "lastOccurrence": "Last occurrence",
+    "removeAll": "Remove all",
+    "ignoreCase": "Ignore case sensitivity",
+    "normalizeAccents": "Normalize accents (é → e)",
+    "normalizeSpaces": "Normalize spaces"
+  },
+  "metricSelector": {
+    "configureChart": "Configure Chart",
+    "columnToAnalyze": "Column to analyze",
+    "selectColumn": "Select a column",
+    "metricToCalculate": "Metric to calculate",
+    "selectMetric": "Select a metric",
+    "groupBy": "Group by (optional)",
+    "noGrouping": "No grouping",
+    "chartType": "Chart type",
+    "chartTitle": "Chart title",
+    "metrics": {
+      "sum": "Sum",
+      "average": "Average",
+      "min": "Minimum",
+      "max": "Maximum",
+      "count": "Count",
+      "median": "Median",
+      "stdDev": "Standard deviation",
+      "uniqueValues": "Unique values",
+      "mostFrequent": "Most frequent value",
+      "avgLength": "Average length",
+      "rangeDays": "Range in days",
+      "countByMonth": "Count by month",
+      "countByYear": "Count by year",
+      "trueCount": "True count",
+      "falseCount": "False count",
+      "truePercent": "True percentage"
+    },
+    "charts": {
+      "bar": "Bar",
+      "line": "Line",
+      "pie": "Pie",
+      "scatter": "Scatter",
+      "histogram": "Histogram",
+      "table": "Table"
+    },
+    "noValidMetric": "Cannot perform this action.",
+    "chooseValidMetric": "Please select a valid metric to continue.",
+    "available": "Available: {n}"
+  },
+  "dashboardBuilder": {
+    "title": "Dashboard Builder",
+    "clearData": "Clear data",
+    "exportConfig": "Export Config",
+    "exportPng": "Export PNG",
+    "clearAll": "Clear All",
+    "dataReady": "Data ready to visualize",
+    "savedCharts": "You have {n} saved charts",
+    "uploadDataForCharts": "Upload compatible data to see real charts.",
+    "preview": "Preview",
+    "addToDashboard": "+ Add to Dashboard",
+    "noData": "No processed data",
+    "processDataFirst": "First process your files in the 'Transform' section.",
+    "myDashboard": "My Dashboard ({n} charts)",
+    "loadDataForChart": "Load data to see the chart",
+    "deleteChart": "Delete chart",
+    "exportChartPng": "Export as PNG",
+    "autoCleanData": "The dashboard will automatically use the cleaned and unified data.",
+    "confirmClear": "Are you sure you want to remove all charts from the dashboard?",
+    "configureFirst": "Configure your first chart above to get started"
+  },
+  "languageSelector": {
+    "switchToEn": "Switch to English",
+    "switchToEs": "Cambiar a español"
+  },
+  "chartRenderer": {
+    "configureToView": "Configure a chart to view the visualization",
+    "noDataToShow": "No data to display",
+    "verifyColumn": "Verify that the column has values",
+    "column": "Column",
+    "metric": "Metric",
+    "count": "Count",
+    "groupedBy": "Grouped by"
+  },
+  "contextMenu": {
+    "row": "Row {n}",
+    "insertRowAbove": "Insert row above",
+    "insertRowBelow": "Insert row below",
+    "editRowName": "Edit row name",
+    "deleteRow": "Delete row",
+    "column": "Column \"{name}\"",
+    "insertColumnLeft": "Insert column left",
+    "insertColumnRight": "Insert column right",
+    "renameColumn": "Rename column",
+    "deleteColumn": "Delete column"
+  }
+}

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import html2canvas from 'html2canvas';
 import { useData } from '../../context/DataContext';
 import MetricSelector, { ChartConfig } from './MetricSelector';
@@ -13,6 +14,7 @@ interface DashboardWidget {
 const STORAGE_KEY_WIDGETS = 'flintrex_dashboard_widgets';
 
 const DashboardBuilder: React.FC = () => {
+  const { t } = useTranslation();
   const { processedData, clearProcessedData } = useData();
   const widgetRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -62,7 +64,7 @@ const DashboardBuilder: React.FC = () => {
   };
 
   const handleClearDashboard = () => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar todos los gráficos del dashboard?')) {
+    if (window.confirm(t('dashboardBuilder.confirmClear'))) {
       setWidgets([]);
       localStorage.removeItem(STORAGE_KEY_WIDGETS);
     }
@@ -127,14 +129,14 @@ const DashboardBuilder: React.FC = () => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Dashboard Builder</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('dashboardBuilder.title')}</h2>
         <div className="flex gap-2">
           {hasData && (
             <button
               onClick={clearProcessedData}
               className="text-sm text-red-600 hover:text-red-800 btn-ghost px-2 py-1 rounded-md"
             >
-              Limpiar datos
+              {t('dashboardBuilder.clearData')}
             </button>
           )}
           {widgets.length > 0 && (
@@ -143,7 +145,7 @@ const DashboardBuilder: React.FC = () => {
                 onClick={handleExportDashboard}
                 className="text-sm bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700 transition btn-relief"
               >
-                Exportar Config
+                {t('dashboardBuilder.exportConfig')}
               </button>
               {hasData && (
                 <button
@@ -151,14 +153,14 @@ const DashboardBuilder: React.FC = () => {
                   className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition btn-relief flex items-center gap-1"
                 >
                   <Image className="w-4 h-4" />
-                  Exportar PNG
+                  {t('dashboardBuilder.exportPng')}
                 </button>
               )}
               <button
                 onClick={handleClearDashboard}
                 className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition btn-relief"
               >
-                Limpiar Todo
+                {t('dashboardBuilder.clearAll')}
               </button>
             </>
           )}
@@ -171,7 +173,7 @@ const DashboardBuilder: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-green-800 dark:text-green-200">
-                <CheckCircle2 className="w-4 h-4 inline mr-1" /> Datos listos para visualizar
+                <CheckCircle2 className="w-4 h-4 inline mr-1" /> {t('dashboardBuilder.dataReady')}
               </p>
               <p className="text-xs text-green-600 dark:text-green-400 mt-1">
                 {processedData.transformed_rows.toLocaleString()} filas · {processedData.columns.length} columnas
@@ -188,10 +190,10 @@ const DashboardBuilder: React.FC = () => {
       {!hasData && widgets.length > 0 && (
         <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg">
           <p className="text-sm text-blue-800 dark:text-blue-200">
-            <BarChart3 className="w-4 h-4 inline mr-1" /> Tienes {widgets.length} gráficos guardados
+            <BarChart3 className="w-4 h-4 inline mr-1" /> {t('dashboardBuilder.savedCharts', { n: widgets.length })}
           </p>
           <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-            Sube datos compatibles para ver los gráficos realescharts.
+            {t('dashboardBuilder.uploadDataForCharts')}
           </p>
         </div>
       )}
@@ -212,7 +214,7 @@ const DashboardBuilder: React.FC = () => {
                   onClick={handleAddWidget}
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium btn-relief"
                 >
-                  + Agregar al Dashboard
+                  {t('dashboardBuilder.addToDashboard')}
                 </button>
               </div>
             )}
@@ -221,7 +223,7 @@ const DashboardBuilder: React.FC = () => {
           {/* Vista Previa del Gráfico Actual */}
           {currentConfig && (
             <div className="mb-8">
-              <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">Vista Previa</h3>
+              <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white">{t('dashboardBuilder.preview')}</h3>
               <ChartRenderer
                 data={processedData}
                 config={currentConfig}
@@ -235,12 +237,12 @@ const DashboardBuilder: React.FC = () => {
       {!hasData && widgets.length === 0 && (
         <div className="text-center py-12 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
           <LayoutDashboard className="w-10 h-10 mx-auto mb-4 text-gray-400" />
-          <p className="text-lg mb-2">No hay datos procesados</p>
+          <p className="text-lg mb-2">{t('dashboardBuilder.noData')}</p>
           <p className="text-sm">
-            Primero procesa tus archivos en la sección <strong>"Transformar"</strong>.
+            {t('dashboardBuilder.processDataFirst')}
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-            El dashboard usará automáticamente los datos limpios y unificados.
+            {t('dashboardBuilder.autoCleanData')}
           </p>
         </div>
       )}
@@ -248,7 +250,7 @@ const DashboardBuilder: React.FC = () => {
       {/* Dashboard con Widgets Guardados */}
       {widgets.length > 0 && (
         <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-          <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">Mi Dashboard ({widgets.length} gráficos)</h3>
+          <h3 className="text-lg font-medium mb-4 text-gray-900 dark:text-white">{t('dashboardBuilder.myDashboard', { n: widgets.length })}</h3>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {widgets.map((widget) => (
               <div key={widget.id} className="relative group" ref={(el) => { widgetRefs.current[widget.id] = el; }}>
@@ -265,7 +267,7 @@ const DashboardBuilder: React.FC = () => {
                       {widget.config.chartType} - {widget.config.metric} ({widget.config.column})
                     </p>
                     <p className="text-xs text-gray-400 mt-2">
-                      Carga datos para ver el gráfico
+                      {t('dashboardBuilder.loadDataForChart')}
                     </p>
                   </div>
                 )}
@@ -273,7 +275,7 @@ const DashboardBuilder: React.FC = () => {
                 <button
                   onClick={() => handleExportWidgetImage(widget.id, widget.config.title)}
                   className="absolute top-2 left-2 bg-green-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
-                  title="Exportar como PNG"
+                  title={t('dashboardBuilder.exportChartPng')}
                 >
                   <Image className="w-4 h-4" />
                 </button>
@@ -281,7 +283,7 @@ const DashboardBuilder: React.FC = () => {
                 <button
                   onClick={() => handleRemoveWidget(widget.id)}
                   className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition"
-                  title="Eliminar gráfico"
+                  title={t('dashboardBuilder.deleteChart')}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -296,7 +298,7 @@ const DashboardBuilder: React.FC = () => {
       {/* Estado vacío con datos disponibles */}
       {hasData && widgets.length === 0 && (
         <div className="text-center py-8 text-gray-400 dark:text-gray-500 border-t border-gray-200 dark:border-gray-700">
-          <p>Configura tu primer gráfico arriba para empezar</p>
+          <p>{t('dashboardBuilder.configureFirst')}</p>
         </div>
       )}
     </div>

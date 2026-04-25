@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 
 interface ZoomableTableProps {
@@ -14,6 +15,7 @@ export const ZoomableTable: React.FC<ZoomableTableProps> = ({
   maxScale = 1.5,
   step = 0.1,
 }) => {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [hasOverflow, setHasOverflow] = useState(false);
@@ -54,7 +56,7 @@ export const ZoomableTable: React.FC<ZoomableTableProps> = ({
             onClick={handleZoomOut}
             disabled={scale <= minScale}
             className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 transition"
-            title="Alejar"
+            title={t('common.zoomOut')}
           >
             <ZoomOut className="w-4 h-4" />
           </button>
@@ -65,14 +67,14 @@ export const ZoomableTable: React.FC<ZoomableTableProps> = ({
             onClick={handleZoomIn}
             disabled={scale >= maxScale}
             className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 transition"
-            title="Acercar"
+            title={t('common.zoomIn')}
           >
             <ZoomIn className="w-4 h-4" />
           </button>
           <button
             onClick={handleReset}
             className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-600 transition"
-            title="Restablecer"
+            title={t('common.reset')}
           >
             <Maximize2 className="w-4 h-4" />
           </button>

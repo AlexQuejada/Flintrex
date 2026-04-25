@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ProcessedData } from '../../context/DataContext';
 import { Hash, FileText, Calendar, CheckSquare, HelpCircle } from 'lucide-react';
 
@@ -55,6 +56,7 @@ const CHARTS_BY_TYPE: Record<string, string[]> = {
 };
 
 const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange }) => {
+  const { t } = useTranslation();
   // Configuración seleccionada
   const [selectedColumn, setSelectedColumn] = useState('');
   const [selectedMetric, setSelectedMetric] = useState('');
@@ -162,37 +164,11 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
   };
 
   const getMetricLabel = (metric: string): string => {
-    const labels: Record<string, string> = {
-      'sum': 'Suma',
-      'avg': 'Promedio',
-      'min': 'Mínimo',
-      'max': 'Máximo',
-      'count': 'Conteo',
-      'median': 'Mediana',
-      'std_dev': 'Desviación estándar',
-      'unique_count': 'Valores únicos',
-      'mode': 'Valor más frecuente',
-      'avg_length': 'Longitud promedio',
-      'range_days': 'Rango en días',
-      'count_by_month': 'Conteo por mes',
-      'count_by_year': 'Conteo por año',
-      'count_true': 'Conteo de Verdaderos',
-      'count_false': 'Conteo de Falsos',
-      'percentage_true': 'Porcentaje de Verdaderos'
-    };
-    return labels[metric] || metric;
+    return t(`metricSelector.metrics.${metric}`, { defaultValue: metric });
   };
 
   const getChartLabel = (chart: string): string => {
-    const labels: Record<string, string> = {
-      'bar': 'Barras',
-      'line': 'Líneas',
-      'pie': 'Pastel',
-      'scatter': 'Dispersión',
-      'histogram': 'Histograma',
-      'table': 'Tabla'
-    };
-    return labels[chart] || chart;
+    return t(`metricSelector.charts.${chart}`, { defaultValue: chart });
   };
 
   const getTypeIcon = (type: string): React.ReactNode => {
@@ -223,20 +199,20 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Configurar Gráfico</h3>
+      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{t('metricSelector.configureChart')}</h3>
 
       <div className="space-y-4">
         {/* Selector de Columna */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-            Columna a analizar
+            {t('metricSelector.columnToAnalyze')}
           </label>
           <select
             value={selectedColumn}
             onChange={(e) => handleColumnChange(e.target.value)}
             className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white text-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0 dark:focus:ring-blue-500 dark:focus:border-blue-500 p-2"
           >
-            <option value="">Selecciona una columna</option>
+            <option value="">{t('metricSelector.selectColumn')}</option>
             {columnsInfo.map((col) => (
               <option key={col.name} value={col.name}>
                 {col.name}
@@ -255,14 +231,14 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
         {selectedColumnInfo && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-              Métrica a calcular
+              {t('metricSelector.metricToCalculate')}
             </label>
             <select
               value={selectedMetric}
               onChange={(e) => handleMetricChange(e.target.value)}
               className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white text-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0 dark:focus:ring-blue-500 dark:focus:border-blue-500 p-2"
             >
-              <option value="">Selecciona una métrica</option>
+              <option value="">{t('metricSelector.selectMetric')}</option>
               {selectedColumnInfo.availableMetrics.map((metric) => (
                 <option key={metric} value={metric}>
                   {getMetricLabel(metric)}
@@ -272,7 +248,7 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
 
             {selectedColumnInfo.availableMetrics.length > 0 && (
               <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                Disponibles: {selectedColumnInfo.availableMetrics.map(getMetricLabel).join(', ')}
+                {t('metricSelector.available')}: {selectedColumnInfo.availableMetrics.map(getMetricLabel).join(', ')}
               </p>
             )}
           </div>
@@ -289,7 +265,7 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
               onChange={(e) => handleGroupByChange(e.target.value)}
               className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white text-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0 dark:focus:ring-blue-500 dark:focus:border-blue-500 p-2"
             >
-              <option value="">Sin agrupación</option>
+              <option value="">{t('metricSelector.noGrouping')}</option>
               {columnsInfo.filter(c => c.name !== selectedColumn).map((col) => (
                 <option key={col.name} value={col.name}>
                   {getTypeIcon(col.type)} {col.name}
@@ -303,7 +279,7 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
         {selectedColumnInfo && selectedMetric && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-              Tipo de gráfico
+              {t('metricSelector.chartType')}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {selectedColumnInfo.availableCharts.map((chart) => (
@@ -328,7 +304,7 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
         {selectedColumn && selectedMetric && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-              Título del gráfico
+              {t('metricSelector.chartTitle')}
             </label>
             <input
               type="text"
@@ -351,10 +327,10 @@ const MetricSelector: React.FC<MetricSelectorProps> = ({ data, onConfigChange })
               </div>
               <div className="ml-3">
                 <p className="text-sm text-red-700 dark:text-red-200">
-                  <strong>No se puede realizar esta acción.</strong> La métrica seleccionada no es compatible con el tipo de dato.
+                  <strong>{t('metricSelector.noValidMetric')}</strong>
                 </p>
                 <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-                  Por favor, elija una métrica válida para continuar.
+                  {t('metricSelector.chooseValidMetric')}
                 </p>
               </div>
             </div>

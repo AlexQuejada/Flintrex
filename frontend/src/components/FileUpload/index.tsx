@@ -1,10 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFileUpload } from './hooks/useFileUpload';
 import { TableEditor } from './components/TableEditor';
 import { RowContextMenu, ColumnContextMenu } from './components/ContextMenus';
 import { Lightbulb } from 'lucide-react';
 
 const FileUpload: React.FC = () => {
+  const { t } = useTranslation();
   const {
     file,
     loading,
@@ -48,7 +50,7 @@ const FileUpload: React.FC = () => {
           <line x1="12" y1="18" x2="12" y2="12" />
           <line x1="9" y1="15" x2="15" y2="15" />
         </svg>
-        Subir archivo
+        {t('fileUpload.title')}
       </h2>
 
       <div className="mb-4">
@@ -65,13 +67,13 @@ const FileUpload: React.FC = () => {
         disabled={!file || loading}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50 btn-relief"
       >
-        {loading ? 'Subiendo...' : 'Subir y procesar'}
+        {loading ? t('fileUpload.uploading') : t('fileUpload.uploadAndProcess')}
       </button>
 
       {localPreview && (
         <div className="mt-6">
           <div className="flex justify-between items-center mb-2">
-            <h3 className="font-semibold text-lg text-gray-900 dark:text-white">Vista previa (editable)</h3>
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{t('fileUpload.preview')}</h3>
             <div className="flex items-center gap-3">
               {hasChanges && (
                 <button
@@ -81,7 +83,7 @@ const FileUpload: React.FC = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Guardar cambios
+                  {t('fileUpload.saveChanges')}
                 </button>
               )}
               <button
@@ -91,18 +93,18 @@ const FileUpload: React.FC = () => {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
-                Limpiar datos
+                {t('fileUpload.clearData')}
               </button>
             </div>
           </div>
 
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            <strong>Archivo:</strong> {localPreview.filename} | <strong>Filas:</strong> {localPreview.rows}
-            {hasChanges && <span className="text-orange-600 ml-2"><strong>(Cambios sin guardar)</strong></span>}
+            <strong>{t('pages.report.file')}:</strong> {localPreview.filename} | <strong>{t('pages.report.rows')}:</strong> {localPreview.rows}
+            {hasChanges && <span className="text-orange-600 ml-2"><strong>{t('fileUpload.unsavedChanges')}</strong></span>}
           </p>
 
           <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-            <Lightbulb className="w-3 h-3 inline mr-1" /> Haz clic en cualquier celda para editarla | Click derecho en fila/columna para opciones
+            <Lightbulb className="w-3 h-3 inline mr-1" /> {t('fileUpload.tableHint')}
           </p>
 
           <TableEditor

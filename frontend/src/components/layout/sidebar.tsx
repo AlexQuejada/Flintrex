@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import './sidebar.css';
 
-const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: boolean) => void }> = ({ collapsed: externalCollapsed, onCollapsedChange }) => {
+const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: boolean) => void }> = ({
+    collapsed: externalCollapsed,
+    onCollapsedChange
+}) => {
+    const { t } = useTranslation();
     const [internalCollapsed, setInternalCollapsed] = useState(false);
     const collapsed = externalCollapsed ?? internalCollapsed;
     const location = useLocation();
 
     const navigation = [
         {
-            name: "Transformar",
+            name: t('sidebar.transform'),
             href: "/transform",
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
@@ -19,7 +25,7 @@ const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: b
             ),
         },
         {
-            name: "Dashboard",
+            name: t('sidebar.dashboard'),
             href: "/dashboard",
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
@@ -29,7 +35,7 @@ const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: b
             ),
         },
         {
-            name: "Intelligence Report",
+            name: t('sidebar.report'),
             href: "/report",
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
@@ -50,46 +56,41 @@ const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: b
     };
 
     return (
-        <div className={`relative flex-shrink-0 transition-all duration-500 ease-in-out ${collapsed ? 'w-16' : 'w-64'}`}>
-            {/* Background que se desvanece suavemente */}
-            <div className={`absolute inset-0 bg-gray-900 dark:bg-gray-950 transition-opacity duration-500 ease-in-out pointer-events-none ${collapsed ? 'opacity-0' : 'opacity-100'}`} />
-            {/* Contenido */}
-            <div className="relative z-10 flex h-full flex-col px-3 py-4 overflow-hidden">
+        <div className={`sidebar-container ${collapsed ? 'collapsed' : ''}`}>
+            <div className="sidebar-bg" />
 
-            {/* Botón colapsar */}
-            <button
-                onClick={toggleCollapse}
-                className={`flex items-center justify-center w-8 h-8 mb-4 mx-auto rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 dark:hover:bg-gray-700 transition-all duration-300 ${collapsed ? '' : 'hover:scale-110'}`}
-                title={collapsed ? 'Expandir' : 'Colapsar'}
-            >
-                <svg className={`w-5 h-5 transition-transform duration-500 ease-in-out ${collapsed ? 'rotate-[540deg]' : ''}`} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-                </svg>
-            </button>
+            <div className="sidebar-content">
+                <button
+                    onClick={toggleCollapse}
+                    className="sidebar-toggle"
+                    title={collapsed ? t('common.expand') : t('common.collapse')}
+                >
+                    <svg
+                        className="sidebar-icon"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={1.8}
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                    </svg>
+                </button>
 
-            {/* Main nav */}
-            <nav className="flex flex-col gap-0.5">
-                {navigation.map((item) => {
-                    const isActive = location.pathname === item.href;
-                    return (
-                        <Link
-                            key={item.name}
-                            to={item.href}
-                            className={`flex items-center rounded-lg px-2.5 py-2 text-sm transition-all duration-500 ease-in-out ${isActive
-                                ? "bg-gray-800 dark:bg-gray-700 text-white font-medium shadow-sm"
-                                : "text-gray-400 hover:bg-gray-800 dark:hover:bg-gray-700 hover:text-gray-100"
-                                } gap-2.5`}>
-                            <span className={`transition-transform duration-500 ease-in-out ${collapsed ? 'rotate-[360deg]' : ''}`}>
-                                {item.icon}
-                            </span>
-                            <span className={`whitespace-nowrap overflow-hidden transition-all duration-500 ease-in-out ${collapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>
-                                {item.name}
-                            </span>
-                        </Link>
-                    );
-                })}
-            </nav>
-
+                <nav className="sidebar-nav">
+                    {navigation.map((item) => {
+                        const isActive = location.pathname === item.href;
+                        return (
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                className={`sidebar-link ${isActive ? 'active' : ''}`}
+                            >
+                                <span className="sidebar-link-icon">{item.icon}</span>
+                                <span className="sidebar-link-text">{item.name}</span>
+                            </Link>
+                        );
+                    })}
+                </nav>
             </div>
         </div>
     );

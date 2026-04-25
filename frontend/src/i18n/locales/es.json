@@ -1,0 +1,183 @@
+{
+  "common": {
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro",
+    "expand": "Expandir",
+    "collapse": "Colapsar",
+    "zoomOut": "Alejar",
+    "zoomIn": "Acercar",
+    "reset": "Restablecer"
+  },
+  "nav": {
+    "brand": "Flintrex(BETA)",
+    "subtitle": "Transformación de datos"
+  },
+  "sidebar": {
+    "transform": "Transformar",
+    "dashboard": "Dashboard",
+    "report": "Intelligence Report"
+  },
+  "footer": {
+    "copyright": "© 2026 Flintrex(BETA)",
+    "developedBy": "Desarrollado por",
+    "github": "GitHub",
+    "version": "v1.0.0"
+  },
+  "pages": {
+    "transform": {
+      "title": "Transformar Datos",
+      "description": "Sube, combina y limpia tus archivos CSV/Excel para prepararlos para el dashboard."
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Visualiza métricas y gráficos de tus datos procesados."
+    },
+    "report": {
+      "title": "Intelligence Report",
+      "description": "Genera un reporte profesional con tus datos y dashboard.",
+      "noData": "No hay datos disponibles. Por favor, sube y procesa archivos en la sección \"Transformar\" primero.",
+      "reportTitle": "Título del Reporte",
+      "titlePlaceholder": "Ej: Reporte de Clientes Q1 2024",
+      "exportPdf": "Exportar a PDF",
+      "generatingPdf": "Generando PDF...",
+      "dataSummary": "Resumen de Datos",
+      "file": "Archivo",
+      "rows": "Filas",
+      "columns": "Columnas",
+      "source": "Origen",
+      "data": "Datos",
+      "showingRows": "Mostrando 100 de {n} filas",
+      "dashboardSection": "Dashboard",
+      "generated": "Generado"
+    }
+  },
+  "fileUpload": {
+    "title": "Subir archivo",
+    "uploading": "Subiendo...",
+    "uploadAndProcess": "Subir y procesar",
+    "preview": "Vista previa (editable)",
+    "saveChanges": "Guardar cambios",
+    "clearData": "Limpiar datos",
+    "fileInfo": "Archivo: {name} | Filas: {n}",
+    "unsavedChanges": "(Cambios sin guardar)",
+    "tableHint": "Haz clic en cualquier celda para editarla | Click derecho en fila/columna para opciones"
+  },
+  "fileMerge": {
+    "title": "Combinar múltiples archivos",
+    "selectFiles": "Selecciona archivos (CSV o Excel)",
+    "filesSelected": "{n} archivo(s) seleccionado(s)",
+    "combinedResult": "Resultado combinado (editable)",
+    "mergeFiles": "Combinar archivos",
+    "merging": "Combinando...",
+    "downloadFile": "Descargar archivo",
+    "downloading": "Descargando...",
+    "clearData": "Limpiar datos",
+    "processedFiles": "Archivos procesados:",
+    "originalRows": "Filas originales:",
+    "finalRows": "Filas finales:"
+  },
+  "operationControls": {
+    "operation": "Operación",
+    "cleanOnly": "Solo limpiar (normalizar)",
+    "removeNulls": "Eliminar nulos",
+    "fillNulls": "Rellenar nulos",
+    "removeDuplicates": "Eliminar duplicados",
+    "fillValue": "Valor para rellenar",
+    "fillValuePlaceholder": "Ej: DESCONOCIDO",
+    "keyColumns": "Columnas clave (separadas por coma)",
+    "keyColumnsPlaceholder": "Ej: email,cliente_id",
+    "keep": "Conservar",
+    "firstOccurrence": "Primera ocurrencia",
+    "lastOccurrence": "Última ocurrencia",
+    "removeAll": "Eliminar todas",
+    "ignoreCase": "Ignorar mayúsculas/minúsculas",
+    "normalizeAccents": "Normalizar acentos (é → e)",
+    "normalizeSpaces": "Normalizar espacios"
+  },
+  "metricSelector": {
+    "configureChart": "Configurar Gráfico",
+    "columnToAnalyze": "Columna a analizar",
+    "selectColumn": "Selecciona una columna",
+    "metricToCalculate": "Métrica a calcular",
+    "selectMetric": "Selecciona una métrica",
+    "groupBy": "Agrupar por (opcional)",
+    "noGrouping": "Sin agrupación",
+    "chartType": "Tipo de gráfico",
+    "chartTitle": "Título del gráfico",
+    "metrics": {
+      "sum": "Suma",
+      "average": "Promedio",
+      "min": "Mínimo",
+      "max": "Máximo",
+      "count": "Conteo",
+      "median": "Mediana",
+      "stdDev": "Desviación estándar",
+      "uniqueValues": "Valores únicos",
+      "mostFrequent": "Valor más frecuente",
+      "avgLength": "Longitud promedio",
+      "rangeDays": "Rango en días",
+      "countByMonth": "Conteo por mes",
+      "countByYear": "Conteo por año",
+      "trueCount": "Conteo de Verdaderos",
+      "falseCount": "Conteo de Falsos",
+      "truePercent": "Porcentaje de Verdaderos"
+    },
+    "charts": {
+      "bar": "Barras",
+      "line": "Líneas",
+      "pie": "Pastel",
+      "scatter": "Dispersión",
+      "histogram": "Histograma",
+      "table": "Tabla"
+    },
+    "noValidMetric": "No se puede realizar esta acción.",
+    "chooseValidMetric": "Por favor, elija una métrica válida para continuar.",
+    "available": "Disponibles: {n}"
+  },
+  "dashboardBuilder": {
+    "title": "Dashboard Builder",
+    "clearData": "Limpiar datos",
+    "exportConfig": "Exportar Config",
+    "exportPng": "Exportar PNG",
+    "clearAll": "Limpiar Todo",
+    "dataReady": "Datos listos para visualizar",
+    "savedCharts": "Tienes {n} gráficos guardados",
+    "uploadDataForCharts": "Sube datos compatibles para ver los gráficos reales.",
+    "preview": "Vista Previa",
+    "addToDashboard": "+ Agregar al Dashboard",
+    "noData": "No hay datos procesados",
+    "processDataFirst": "Primero procesa tus archivos en la sección 'Transformar'.",
+    "myDashboard": "Mi Dashboard ({n} gráficos)",
+    "loadDataForChart": "Carga datos para ver el gráfico",
+    "deleteChart": "Eliminar gráfico",
+    "exportChartPng": "Exportar como PNG",
+    "autoCleanData": "El dashboard usará automáticamente los datos limpios y unificados.",
+    "confirmClear": "¿Estás seguro de que quieres eliminar todos los gráficos del dashboard?",
+    "configureFirst": "Configura tu primer gráfico arriba para empezar"
+  },
+  "languageSelector": {
+    "switchToEn": "Cambiar a inglés",
+    "switchToEs": "Cambiar a español"
+  },
+  "chartRenderer": {
+    "configureToView": "Configura un gráfico para ver la visualización",
+    "noDataToShow": "No hay datos para mostrar",
+    "verifyColumn": "Verifica que la columna tenga valores",
+    "column": "Columna",
+    "metric": "Métrica",
+    "count": "Conteo",
+    "groupedBy": "Agrupado por"
+  },
+  "contextMenu": {
+    "row": "Fila {n}",
+    "insertRowAbove": "Insertar fila arriba",
+    "insertRowBelow": "Insertar fila abajo",
+    "editRowName": "Editar nombre de fila",
+    "deleteRow": "Eliminar fila",
+    "column": "Columna \"{name}\"",
+    "insertColumnLeft": "Insertar columna izquierda",
+    "insertColumnRight": "Insertar columna derecha",
+    "renameColumn": "Renombrar columna",
+    "deleteColumn": "Eliminar columna"
+  }
+}

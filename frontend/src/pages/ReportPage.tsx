@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useData, ProcessedData } from '../context/DataContext';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -15,6 +16,7 @@ const STORAGE_KEY_WIDGETS = 'flintrex_dashboard_widgets';
 const STORAGE_KEY_DATA = 'flintrex_processed_data';
 
 const ReportPage: React.FC = () => {
+  const { t } = useTranslation();
   const { processedData: contextData } = useData();
   const [reportSubtitle, setReportSubtitle] = useState('');
   const [isExporting, setIsExporting] = useState(false);
@@ -101,9 +103,9 @@ const ReportPage: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Intelligence Report</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('pages.report.title')}</h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Genera un reporte profesional con tus datos y dashboard.
+          {t('pages.report.description')}
         </p>
       </div>
 
@@ -111,7 +113,7 @@ const ReportPage: React.FC = () => {
       {!hasData && (
         <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
           <p className="text-yellow-800 dark:text-yellow-200">
-            No hay datos disponibles. Por favor, sube y procesa archivos en la sección "Transformar" primero.
+            {t('pages.report.noData')}
           </p>
         </div>
       )}
@@ -121,13 +123,13 @@ const ReportPage: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-              Título del Reporte
+              {t('pages.report.reportTitle')}
             </label>
             <input
               type="text"
               value={reportSubtitle}
               onChange={(e) => setReportSubtitle(e.target.value)}
-              placeholder="Ej: Reporte de Clientes Q1 2024"
+              placeholder={t('pages.report.titlePlaceholder')}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-gray-700 dark:text-white"
             />
           </div>
@@ -147,14 +149,14 @@ const ReportPage: React.FC = () => {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Generando PDF...
+                {t('pages.report.generatingPdf')}
               </>
             ) : (
               <>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Exportar a PDF
+                {t('pages.report.exportPdf')}
               </>
             )}
           </button>
@@ -170,27 +172,27 @@ const ReportPage: React.FC = () => {
             {reportSubtitle && (
               <p className="text-xl text-blue-600 font-medium">{reportSubtitle}</p>
             )}
-            <p className="text-gray-500 dark:text-gray-400 mt-2">Generado: {formatDate()}</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-2">{t('pages.report.generated')}: {formatDate()}</p>
           </div>
 
           {/* Data Summary */}
           <div className="mb-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Resumen de Datos</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{t('pages.report.dataSummary')}</h3>
             <div className="grid grid-cols-4 gap-4 text-sm">
               <div>
-                <span className="text-gray-400">Archivo:</span>
+                <span className="text-gray-400">{t('pages.report.file')}:</span>
                 <p className="font-medium">{processedData.filename}</p>
               </div>
               <div>
-                <span className="text-gray-400">Filas:</span>
+                <span className="text-gray-400">{t('pages.report.rows')}:</span>
                 <p className="font-medium">{processedData.transformed_rows.toLocaleString()}</p>
               </div>
               <div>
-                <span className="text-gray-400">Columnas:</span>
+                <span className="text-gray-400">{t('pages.report.columns')}:</span>
                 <p className="font-medium">{getDisplayColumns().length}</p>
               </div>
               <div>
-                <span className="text-gray-400">Origen:</span>
+                <span className="text-gray-400">{t('pages.report.source')}:</span>
                 <p className="font-medium capitalize">{processedData.source || 'single'}</p>
               </div>
             </div>
@@ -198,7 +200,7 @@ const ReportPage: React.FC = () => {
 
           {/* Data Table */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Datos</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('pages.report.data')}</h3>
             <div className="border rounded-lg overflow-hidden">
               <ZoomableTable>
                 <table className="w-full text-sm">
@@ -226,7 +228,7 @@ const ReportPage: React.FC = () => {
               </ZoomableTable>
               {processedData.preview.length > 100 && (
                 <p className="text-sm text-gray-500 dark:text-gray-400 p-2 bg-gray-50 dark:bg-gray-700">
-                  Mostrando 100 de {processedData.preview.length.toLocaleString()} filas
+                  {t('pages.report.showingRows', { n: processedData.preview.length.toLocaleString() })}
                 </p>
               )}
             </div>
@@ -235,7 +237,7 @@ const ReportPage: React.FC = () => {
           {/* Dashboard Widgets */}
           {widgets.length > 0 && processedData && (
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dashboard</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('pages.report.dashboardSection')}</h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {widgets.map((widget) => (
                   <ChartRenderer

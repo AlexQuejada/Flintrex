@@ -1,5 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
+import LanguageSelector from './LanguageSelector';
+import './navbar.css';
 
 interface NavbarProps {
     collapsed?: boolean;
@@ -7,20 +10,24 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ collapsed }) => {
     const { theme, toggleTheme } = useTheme();
+    const { t } = useTranslation();
 
     return (
-        <nav className="bg-gray-900 dark:bg-gray-950 text-white px-6 py-4 shadow-md flex-shrink-0">
-            <div className="flex justify-between items-center">
-                <div className="flex items-center gap-1">
-                    <img src="/IconFLintres.png" alt="FlintrexBETA" className="h-10 w-13" />
-                    <span className={`text-xl font-bold whitespace-nowrap overflow-hidden transition-all duration-500 ease-in-out ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto'}`}>Flintrex(BETA)</span>
+        <nav className="navbar">
+            <div className="navbar-inner">
+                <div className="navbar-brand">
+                    <img src="/IconFLintres.png" alt="FlintrexBETA" className="navbar-logo" />
+                    <span className={`navbar-brand-text ${collapsed ? 'hidden' : ''}`}>
+                        {t('nav.brand')}
+                    </span>
                 </div>
-                <div className="flex items-center gap-4">
-                    <span className="text-sm text-gray-400 hidden sm:block">Transformación de datos</span>
+                <div className="navbar-actions">
+                    <span className="navbar-subtitle">{t('nav.subtitle')}</span>
+                    <LanguageSelector />
                     <button
                         onClick={toggleTheme}
-                        className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-all duration-200"
-                        title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                        className="navbar-theme-btn"
+                        title={theme === 'dark' ? t('common.lightMode') : t('common.darkMode')}
                     >
                         {theme === 'dark' ? (
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">

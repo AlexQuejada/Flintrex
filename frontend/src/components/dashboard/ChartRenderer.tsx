@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ProcessedData } from '../../context/DataContext';
 import { ChartConfig } from './MetricSelector';
 import {
@@ -15,6 +16,7 @@ interface ChartRendererProps {
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16'];
 
 const ChartRenderer: React.FC<ChartRendererProps> = ({ data, config }) => {
+  const { t } = useTranslation();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -69,7 +71,7 @@ const ChartRenderer: React.FC<ChartRendererProps> = ({ data, config }) => {
   if (!config) {
     return (
       <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-8 text-center text-gray-500 dark:text-gray-400">
-        Configura un gráfico para ver la visualización
+        {t('chartRenderer.configureToView')}
       </div>
     );
   }
@@ -80,8 +82,8 @@ const ChartRenderer: React.FC<ChartRendererProps> = ({ data, config }) => {
         <svg className="h-8 w-8 text-yellow-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
-        <p className="text-yellow-700 dark:text-yellow-200">No hay datos para mostrar</p>
-        <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-1">Verifica que la columna tenga valores</p>
+        <p className="text-yellow-700 dark:text-yellow-200">{t('chartRenderer.noDataToShow')}</p>
+        <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-1">{t('chartRenderer.verifyColumn')}</p>
       </div>
     );
   }
@@ -146,10 +148,10 @@ const ChartRenderer: React.FC<ChartRendererProps> = ({ data, config }) => {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
-                    {config.groupBy || 'Columna'}
+                    {config.groupBy || t('chartRenderer.column')}
                   </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{config.metric}</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Conteo</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{t(`metricSelector.metrics.${config.metric}`)}</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">{t('chartRenderer.count')}</th>
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
@@ -172,9 +174,9 @@ const ChartRenderer: React.FC<ChartRendererProps> = ({ data, config }) => {
       <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{config.title}</h4>
       {renderChart()}
       <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-        Columna: <strong>{config.column}</strong> |
-        Métrica: <strong>{config.metric}</strong>
-        {config.groupBy && <> | Agrupado por: <strong>{config.groupBy}</strong></>}
+        {t('chartRenderer.column')}: <strong>{config.column}</strong> |
+        {t('chartRenderer.metric')}: <strong>{t(`metricSelector.metrics.${config.metric}`)}</strong>
+        {config.groupBy && <> | {t('chartRenderer.groupedBy')}: <strong>{config.groupBy}</strong></>}
       </div>
     </div>
   );
