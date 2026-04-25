@@ -98,7 +98,7 @@ export const useFileMerge = () => {
     formData.append('merge_mode', 'union');
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/data/merge', formData);
+      const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/v1/data/merge`, formData);
       const previewWithNames = res.data.preview.map((row: any, idx: number) => ({
         ...row,
         _row_name: `Fila_${idx + 1}`
@@ -151,7 +151,7 @@ export const useFileMerge = () => {
     formData.append('download_format', downloadFormat);
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/data/merge/download', formData, {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/v1/data/merge/download`, formData, {
         responseType: 'blob'
       });
 
