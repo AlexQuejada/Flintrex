@@ -3,6 +3,10 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
+# 🔥 FORZAR LA VARIABLE DE ENTORNO
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
 # Copiar archivos de dependencias
 COPY package*.json ./
 
