@@ -6,8 +6,13 @@ WORKDIR /app
 # Copiar archivos de dependencias
 COPY package*.json ./
 
-# Instalar dependencias FORZANDO legacy-peer-deps
+# Limpiar cache e instalar con fuerza
+RUN npm cache clean --force
+RUN rm -rf node_modules package-lock.json
 RUN npm install --legacy-peer-deps
+
+# INSTALAR AJV EXPLÍCITAMENTE (solución al error)
+RUN npm install ajv@8.12.0 ajv-keywords@5.1.0 --legacy-peer-deps
 
 # Copiar el resto del código
 COPY . .
