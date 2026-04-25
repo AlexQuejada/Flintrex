@@ -22,6 +22,12 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, fill 0.3s ease, stroke 0.3s ease;
 }
 
+/* Transición para cuando cambia de dark a light (y viceversa) */
+:not(.dark),
+:not(.dark) * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, fill 0.3s ease, stroke 0.3s ease;
+}
+
 /* Scrollbars personalizadas */
 ::-webkit-scrollbar {
   width: 8px;

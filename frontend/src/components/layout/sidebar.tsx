@@ -87,6 +87,7 @@ const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: b
                             >
                                 <span className="sidebar-link-icon">{item.icon}</span>
                                 <span className="sidebar-link-text">{item.name}</span>
+                                <span className="sidebar-tooltip">{item.name}</span>
                             </Link>
                         );
                     })}

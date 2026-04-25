@@ -4,6 +4,7 @@
   padding: 16px 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
 .dark .navbar {
@@ -24,7 +25,7 @@
 
 .navbar-logo {
   height: 40px;
-  width: 52px;
+  width: 41px;
 }
 
 .navbar-brand-text {
@@ -34,7 +35,7 @@
   overflow: hidden;
   padding-right: 0;
   opacity: 1;
-  transition: opacity 500ms ease-in-out, padding-right 500ms ease-in-out;
+  transition: opacity 500ms ease-in-out;
 }
 
 .navbar-brand-text.hidden {

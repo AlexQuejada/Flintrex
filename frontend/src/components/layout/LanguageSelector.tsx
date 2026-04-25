@@ -2,8 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const languages = [
-  { code: 'es', label: 'ES', flag: '🇪🇸' },
-  { code: 'en', label: 'EN', flag: '🇺🇸' },
+  { code: 'es', label: 'ES', },
+  { code: 'en', label: 'EN', },
 ];
 
 const LanguageSelector: React.FC = () => {
@@ -23,7 +23,6 @@ const LanguageSelector: React.FC = () => {
       className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-700 transition-all duration-200"
       title={currentLang.code === 'es' ? t('languageSelector.switchToEn') : t('languageSelector.switchToEs')}
     >
-      <span className="text-base">{currentLang.flag}</span>
       <span>{currentLang.label}</span>
     </button>
   );
