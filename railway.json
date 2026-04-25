@@ -1,0 +1,10 @@
+{
+    "services": [
+        {
+            "name": "frontend",
+            "rootDir": "frontend",
+            "buildCommand": "npm install --legacy-peer-deps && npm run build",
+            "startCommand": "npx serve -s build -l $PORT"
+        }
+    ]
+}
