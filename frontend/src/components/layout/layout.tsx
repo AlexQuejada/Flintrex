@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
 import Footer from './footer';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+        return window.innerWidth < 650;
+    });
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 649px)');
+        const handleChange = (e: MediaQueryListEvent) => {
+            setSidebarCollapsed(e.matches);
+        };
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+    }, []);
+
     return (
         <div className="h-screen flex flex-col">
             <Navbar collapsed={sidebarCollapsed} />

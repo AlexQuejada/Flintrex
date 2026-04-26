@@ -51,7 +51,7 @@ export const ZoomableTable: React.FC<ZoomableTableProps> = ({
     <div className="relative">
       {/* Controles de zoom - solo visibles cuando hay overflow horizontal */}
       {hasOverflow && (
-        <div className="absolute -top-20 right-2 z-10 flex gap-1 bg-white dark:bg-gray-700 rounded-lg shadow-md p-1">
+        <div className="absolute -top-10 right-2 z-10 flex gap-1 bg-white dark:bg-gray-700 rounded-lg shadow-md p-1">
           <button
             onClick={handleZoomOut}
             disabled={scale <= minScale}

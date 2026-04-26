@@ -14,13 +14,23 @@ const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: b
 
     const navigation = [
         {
+            name: t('sidebar.Inicio'),
+            href: "/#",
+            icon: (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+            ),
+        },
+        {
             name: t('sidebar.transform'),
             href: "/transform",
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                    <path d="M23 4v6h-6" />
+                    <path d="M1 20v-6h6" />
+                    <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
                 </svg>
             ),
         },
@@ -29,8 +39,12 @@ const Sidebar: React.FC<{ collapsed?: boolean; onCollapsedChange?: (collapsed: b
             href: "/dashboard",
             icon: (
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                    <polyline points="9 22 9 12 15 12 15 22" />
+                    <path d="M21 21H4V4" />
+                    <path d="M7 15l3-4 3 3 5-6" />
+                    <circle cx="7" cy="15" r="1.5" />
+                    <circle cx="10" cy="11" r="1.5" />
+                    <circle cx="13" cy="14" r="1.5" />
+                    <circle cx="18" cy="8" r="1.5" />
                 </svg>
             ),
         },

@@ -13,9 +13,34 @@
     "subtitle": "Transformación de datos"
   },
   "sidebar": {
+    "Inicio": "Inicio",
     "transform": "Transformar",
     "dashboard": "Dashboard",
     "report": "Intelligence Report"
+  },
+  "home": {
+    "hero": {
+      "title": "Transforma tus datos en segundos",
+      "subtitle": "Flintrex puede detectar y alinear automáticamente columnas relacionadas entre archivos. Sube, limpia, combina y visualiza tus archivos CSV y Excel sin complicaciones. Sin registro requerido.",
+      "cta": "Comenzar a transformar"
+    },
+    "features": {
+      "transform": {
+        "title": "Subir & Limpiar",
+        "description": "Arrastra y suelta tus archivos CSV o Excel. Edita celdas directamente y aplica operaciones de limpieza automáticas.",
+        "action": "Pruébalo ahora"
+      },
+      "dashboard": {
+        "title": "Crear Dashboards",
+        "description": "Crea gráficos y métricas a partir de tus datos limpios. Barras, líneas, pastel, dispersión y más tipos de gráficos.",
+        "action": "Ir al dashboard"
+      },
+      "report": {
+        "title": "Generar Reportes",
+        "description": "Exporta reportes profesionales en PDF combinando el resumen de tus datos y visualizaciones del dashboard.",
+        "action": "Crear reporte"
+      }
+    }
   },
   "footer": {
     "copyright": "© 2026 Flintrex(BETA)",

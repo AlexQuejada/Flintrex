@@ -13,9 +13,34 @@
     "subtitle": "Data transformation"
   },
   "sidebar": {
+    "Inicio": "Home",
     "transform": "Transform",
     "dashboard": "Dashboard",
     "report": "Intelligence Report"
+  },
+  "home": {
+    "hero": {
+      "title": "Transform your data in seconds",
+      "subtitle": "Flintrex can automatically detect and align related columns across files. Upload, clean, combine and visualize your CSV and Excel files without complexity. No sign-up required.",
+      "cta": "Start transforming"
+    },
+    "features": {
+      "transform": {
+        "title": "Upload & Clean",
+        "description": "Drag and drop your CSV or Excel files. Edit cells directly and apply automatic cleaning operations.",
+        "action": "Try it now"
+      },
+      "dashboard": {
+        "title": "Build Dashboards",
+        "description": "Create charts and metrics from your cleaned data. Bar, line, pie, scatter and more chart types.",
+        "action": "Go to dashboard"
+      },
+      "report": {
+        "title": "Generate Reports",
+        "description": "Export professional PDF reports combining your data summary and dashboard visualizations.",
+        "action": "Create report"
+      }
+    }
   },
   "footer": {
     "copyright": "© 2026 Flintrex(BETA)",
