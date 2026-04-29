@@ -47,7 +47,13 @@ Procesamiento robusto de archivos corruptos
 
 Trazabilidad por archivo de origen
 
-🧱 Stack tecnológico Capa Tecnología Backend API Python + FastAPI Procesamiento de datos Pandas, NumPy Frontend React + TypeScript + TailwindCSS Base de datos PostgreSQL Contenedores Docker + Docker Compose Control de versiones Git + GitHub
+🧱 Stack tecnológico 
+Capa Tecnología Backend 
+API Python + FastAPI Procesamiento de datos PandasNumPy 
+Frontend React + TypeScript + TailwindCSS 
+Base de datos PostgreSQL Contenedores Docker + Docker Compose 
+Control de versiones Git + GitHub
+
 📁 Estructura del proyecto
 
 Flintrex/
