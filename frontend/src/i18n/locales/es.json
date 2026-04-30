@@ -80,6 +80,8 @@
     "title": "Subir archivo",
     "uploading": "Subiendo...",
     "uploadAndProcess": "Subir y procesar",
+    "uploadError": "El archivo que intentas cargar está vacío o tiene un formato incorrecto. Por favor intenta nuevamente con un archivo válido.",
+    "close": "Cerrar",
     "preview": "Vista previa (editable)",
     "saveChanges": "Guardar cambios",
     "clearData": "Limpiar datos",

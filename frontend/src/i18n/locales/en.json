@@ -80,6 +80,8 @@
     "title": "Upload file",
     "uploading": "Uploading...",
     "uploadAndProcess": "Upload and process",
+    "uploadError": "The file you are trying to upload is empty or has an incorrect format. Please try again with a valid file.",
+    "close": "Close",
     "preview": "Preview (editable)",
     "saveChanges": "Save changes",
     "clearData": "Clear data",

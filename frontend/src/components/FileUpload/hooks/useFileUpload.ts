@@ -24,6 +24,7 @@ export const useFileUpload = () => {
   const [rowNameValue, setRowNameValue] = useState('');
   const [editingColumnName, setEditingColumnName] = useState<number | null>(null);
   const [columnNameValue, setColumnNameValue] = useState('');
+  const [uploadError, setUploadError] = useState<boolean>(false);
 
   // Cargar datos persistidos al montar
   useEffect(() => {
@@ -61,6 +62,7 @@ export const useFileUpload = () => {
   }, [contextMenu.visible, columnContextMenu.visible]);
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadError(false);
     if (e.target.files?.[0]) {
       setFile(e.target.files[0]);
     }
@@ -110,7 +112,7 @@ export const useFileUpload = () => {
       });
     } catch (err) {
       console.error(err);
-      alert('Error al subir el archivo');
+      setUploadError(true);
     } finally {
       setLoading(false);
     }
@@ -334,6 +336,8 @@ export const useFileUpload = () => {
     rowNameValue,
     editingColumnName,
     columnNameValue,
+    uploadError,
+    setUploadError,
 
     // Actions
     setEditValue,
