@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useData, ProcessedData } from '../../../context/DataContext';
 import { PreviewData, RowContextMenuState, ColumnContextMenuState, EditingCell } from '../types';
+import { trackEvent } from '../../../analytics/ga';
 
 export const useFileUpload = () => {
   const { processedData, setProcessedData, clearProcessedData } = useData();
@@ -78,8 +79,8 @@ export const useFileUpload = () => {
     const endpoint = file.name.endsWith('.csv')
       ? 'http://localhost:8000/api/v1/data/upload/csv'
       : file.name.endsWith('.xlsx') || file.name.endsWith('.xls')
-      ? 'http://localhost:8000/api/v1/data/upload/excel'
-      : null;
+        ? 'http://localhost:8000/api/v1/data/upload/excel'
+        : null;
 
     if (!endpoint) {
       alert('Formato no soportado. Use CSV o Excel');
@@ -110,9 +111,26 @@ export const useFileUpload = () => {
         columnTypes: res.data.column_types,
         source: 'single',
       });
+
+      // TRACKEO DE ÉXITO
+      trackEvent('file_upload', {
+        label: file.name,
+        file_size: file.size,
+        file_type: file.type,
+        success: true,
+      });
+
     } catch (err) {
       console.error(err);
       setUploadError(true);
+
+      // TRACKEO DE ERROR (un solo catch para todo)
+      trackEvent('file_upload_error', {
+        label: file.name,
+        file_size: file.size,
+        error: err instanceof Error ? err.message : 'Error desconocido',
+      });
+
     } finally {
       setLoading(false);
     }

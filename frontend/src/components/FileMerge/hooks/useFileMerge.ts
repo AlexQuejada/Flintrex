@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useData, ProcessedData } from '../../../context/DataContext';
 import { PreviewData, RowContextMenuState, ColumnContextMenuState, EditingCell } from '../types';
+import { trackEvent } from '../../../analytics/ga';
 
 export const useFileMerge = () => {
   const { processedData, setProcessedData, clearProcessedData } = useData();
@@ -120,58 +121,101 @@ export const useFileMerge = () => {
         columnTypes: Object.fromEntries(columnsWithRowName.map((col: string) => [col, 'unknown'])),
         source: 'merge',
       });
+
+      // ==========================================
+      //  TRACKEO DE MERGE EXITOSO
+      // ==========================================
+      trackEvent('file_merge', {
+        files_count: files.length,
+        operation,
+        rows_result: res.data.transformed_rows,
+        success: true,
+      });
+
     } catch (err) {
       console.error('Error al combinar:', err);
       alert('Error al combinar los archivos');
+
+      // ==========================================
+      //  TRACKEO DE ERROR EN MERGE
+      // ==========================================
+      trackEvent('file_merge_error', {
+        files_count: files.length,
+        operation,
+        error: err instanceof Error ? err.message : 'Error desconocido',
+      });
+
     } finally {
       setLoading(false);
     }
   }, [files, operation, fillValue, keyColumns, caseSensitive, normalizeAccents, normalizeWhitespace, keep, setProcessedData]);
 
   const handleDownload = useCallback(async () => {
-    if (!files || files.length < 2) {
-      alert('Selecciona al menos 2 archivos');
-      return;
-    }
+  if (!files || files.length < 2) {
+    alert('Selecciona al menos 2 archivos');
+    return;
+  }
 
-    setLoading(true);
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
-    }
+  setLoading(true);
+  const formData = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    formData.append('files', files[i]);
+  }
 
-    formData.append('operation', operation);
-    if (fillValue) formData.append('fill_value', fillValue);
-    if (keyColumns) formData.append('key_columns', keyColumns);
-    formData.append('case_sensitive', String(caseSensitive));
-    formData.append('normalize_accents', String(normalizeAccents));
-    formData.append('normalize_whitespace', String(normalizeWhitespace));
-    formData.append('keep', keep);
-    formData.append('merge_mode', 'union');
-    formData.append('download_format', downloadFormat);
+  formData.append('operation', operation);
+  if (fillValue) formData.append('fill_value', fillValue);
+  if (keyColumns) formData.append('key_columns', keyColumns);
+  formData.append('case_sensitive', String(caseSensitive));
+  formData.append('normalize_accents', String(normalizeAccents));
+  formData.append('normalize_whitespace', String(normalizeWhitespace));
+  formData.append('keep', keep);
+  formData.append('merge_mode', 'union');
+  formData.append('download_format', downloadFormat);
 
-    try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/v1/data/merge/download`, formData, {
-        responseType: 'blob'
-      });
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/v1/data/merge/download`, formData, {
+      responseType: 'blob'
+    });
 
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      const contentDisposition = res.headers['content-disposition'];
-      const filename = contentDisposition?.split('filename=')[1]?.replace(/"/g, '') || `merged.${downloadFormat === 'excel' ? 'xlsx' : 'csv'}`;
-      link.setAttribute('download', filename);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Error al descargar:', err);
-      alert('Error al descargar el archivo');
-    } finally {
-      setLoading(false);
-    }
-  }, [files, operation, fillValue, keyColumns, caseSensitive, normalizeAccents, normalizeWhitespace, keep, downloadFormat]);
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    const contentDisposition = res.headers['content-disposition'];
+    const filename = contentDisposition?.split('filename=')[1]?.replace(/"/g, '') || `merged.${downloadFormat === 'excel' ? 'xlsx' : 'csv'}`;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+
+    // ==========================================
+    //  TRACKEO DE DESCARGA EXITOSA
+    // ==========================================
+    trackEvent('file_download', {
+      files_count: files.length,
+      operation,
+      download_format: downloadFormat,
+      success: true,
+    });
+
+  } catch (err) {
+    console.error('Error al descargar:', err);
+    alert('Error al descargar el archivo');
+
+    // ==========================================
+    //  TRACKEO DE ERROR EN DESCARGA
+    // ==========================================
+    trackEvent('file_download_error', {
+      files_count: files.length,
+      operation,
+      download_format: downloadFormat,
+      error: err instanceof Error ? err.message : 'Error desconocido',
+    });
+
+  } finally {
+    setLoading(false);
+  }
+}, [files, operation, fillValue, keyColumns, caseSensitive, normalizeAccents, normalizeWhitespace, keep, downloadFormat])
 
   // Edición de celdas
   const startEditing = useCallback((rowIdx: number, col: string, value: any) => {
